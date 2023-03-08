@@ -20,22 +20,29 @@ func Hello(name string) (string, error) {
 	return messages, nil
 }
 
-func Hellos(name []string) (map[string]string, error) {
-	size := len(name)
+func Hellos(names []string) (map[string]string, error) {
+	size := len(names)
 
-	i := 0
-	for i < size {
-		if name[i] == "" {
-			return nil, errors.New(string(i) + " is empty")
-		}
-		i++
+	// i := 0
+	// for i < size {
+	// 	if name[i] == "" {
+	// 		return nil, errors.New(string(i) + " is empty")
+	// 	}
+	// 	i++
+	// }
+	if size < 1 {
+		return nil, errors.New("names is empty")
 	}
 
 	results := make(map[string]string)
-	j := 0
-	for j < size {
-		results[name[j]] = fmt.Sprintf(randomMessage(), name[j])
-		j++
+
+	for _, name := range names {
+		_, err := Hello(name)
+		if err != nil {
+			return nil, errors.New(name + "fatal error")
+		}
+
+		results[name] = fmt.Sprintf(randomMessage(), name)
 	}
 
 	// messages := fmt.Sprintf(randomMessage(), name)
